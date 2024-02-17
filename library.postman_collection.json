@@ -1,0 +1,193 @@
+{
+	"info": {
+		"_postman_id": "0c5e660c-bf2c-46de-bdd8-07562a5c104c",
+		"name": "library",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28174136"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let firstname = pm.variables.replaceIn('{{$randomFirstName}}')\r",
+							"\r",
+							"let lastname = pm.variables.replaceIn('{{$randomLastName}}')\r",
+							"\r",
+							"let fullName = firstname + \" \" + lastname\r",
+							"\r",
+							"pm.globals.set(\"AuthorName\", fullName)\r",
+							"\r",
+							"myRandomNumber = pm.variables.replaceIn('{{$randomInt}}')\r",
+							"console.log(myRandomNumber)\r",
+							"pm.collectionVariables.set('randomNumberGenerator', myRandomNumber)\r",
+							"\r",
+							"let booktitle = pm.variables.replaceIn('{{$randomJobTitle}}')\r",
+							"let bookColor = pm.variables.replaceIn('{{$randomColor}}')\r",
+							"let fullbookName = booktitle+\" \"+bookColor\r",
+							"\r",
+							"pm.collectionVariables.set('booktitleGenerator',fullbookName)\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.collectionVariables.set(\"bookId\",myRandomNumber+myRandomNumber+myRandomNumber)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"check add\",function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n\"name\":\"{{booktitleGenerator}}\",\r\n\"isbn\":\"{{randomNumberGenerator}}\",\r\n\"aisle\":\"{{randomNumberGenerator}}{{randomNumberGenerator}}\",\r\n\"author\":\"{{AuthorName}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/Addbook.php",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"Addbook.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"check get\",function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/GetBook.php?ID={{bookId}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"GetBook.php"
+					],
+					"query": [
+						{
+							"key": "ID",
+							"value": "{{bookId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"check delete\",function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n\"ID\" : \"{{bookId}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/DeleteBook.php",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"DeleteBook.php"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseurl",
+			"value": "https://rahulshettyacademy.com/Library"
+		},
+		{
+			"key": "booktitleGenerator",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "randomNumberGenerator",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "bookId",
+			"value": ""
+		}
+	]
+}
